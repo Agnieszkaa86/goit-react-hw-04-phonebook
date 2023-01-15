@@ -16,6 +16,31 @@ export const INITIAL_STATE = {
 };
 
 export class App extends Component {
+ 
+  componentDidMount = () => {
+    let contactsFromStorage = JSON.parse(localStorage.getItem('contacts'));
+    if (contactsFromStorage === null) {
+      this.setState({
+        contacts: [],
+      });
+    } else {
+      this.setState({
+        contacts: contactsFromStorage,
+      });
+    }
+  };
+
+   componentDidUpdate = (prevProps) => {
+    try {
+      const contacts = JSON.stringify(this.state.contacts);
+      if (prevProps.contacts !== contacts.length) {
+        
+      } localStorage.setItem('contacts', contacts);
+    } catch (error) {
+      console.error('Set state error: ', error.message);
+    }
+  };
+
   state = {
    ...INITIAL_STATE,
   };
