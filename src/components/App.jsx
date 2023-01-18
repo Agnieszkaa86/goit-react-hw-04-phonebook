@@ -5,36 +5,36 @@ import { Filter } from './Filter/Filter';
 import { ContactList } from 'components/ContactList/ContactList';
 import { Container } from './ContactForm/ContactForm.styled';
 
-const CONTACTS_STORAGE_KEY = 'contacts';
-
 export const App = () => {
-
-   const [contacts, setContacts] = useState(()=>JSON.parse(localStorage.getItem(CONTACTS_STORAGE_KEY))|| []);
-   const [filter, setFilter] = useState('');
+  const [contacts, setContacts] = useState(
+    () => JSON.parse(localStorage.getItem('contacts')) || []
+  );
+  const [filter, setFilter] = useState('');
   useEffect(() => {
     const contactsJSON = JSON.stringify(contacts);
-    localStorage.setItem(CONTACTS_STORAGE_KEY, contactsJSON);
+    localStorage.setItem('contacts', contactsJSON);
   }, [contacts]);
-   
 
   const addNewContact = ({ name, number }) => {
-    if (contacts.find(contact =>
-      contact.name===name)) {
+    if (
+      contacts.find(
+        contact => contact.name.toLowerCase() === name.toLowerCase()
+      )
+    ) {
       alert(`${name} is already in contacts`);
       return;
     }
-    if (contacts.find(contact => contact.number === number)){
-      alert(`Number ${number} already exists`);
+    if (contacts.find(contact => contact.number === number)) {
+      alert(`Number ${number} already exists.`);
       return;
     }
     const newContact = {
       name,
       number,
-      id: nanoid()
+      id: nanoid(),
     };
-    
-      setContacts([...contacts,newContact]);
-    
+
+    setContacts([...contacts, newContact]);
   };
 
   const searchByName = event => {
